@@ -17,6 +17,13 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer ></script >
 
     <title >Challenge PHP Guestbook</title >
+
+    <style >
+        [x-cloak] {
+            display: none;
+        }
+    </style >
+
 </head >
 
 <body class="" >
