@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-$nameFirst = $nameLast = $title = $message = "";
+//namespace Php_guestbook_mysql;
+$ID = $nameFirst = $nameLast = $title = $message = "";
 
 $nameFirstError = $nameLastError = $titleError = $messageError = "";
 
@@ -14,45 +15,61 @@ $isFormValid       = true;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (!empty($_POST['name-first'])) {
-        $nameFirst = sanitizeData($_POST['name-first']);
+    if (isset($_POST['update'])) {
+        $test = Guestbook::getPost($_POST['update']);
+
+        $ID        = $test[0]['ID'];
+        $nameFirst = $test[0]['name'];
+        $nameLast  = $test[0]['name'];
+        $title     = $test[0]['title'];
+        $message   = $test[0]['message'];
+    } elseif (isset($_POST['delete'])) {
+        $test = Guestbook::deletePost($_POST['delete']);
+        var_dump($test);
+
     } else {
-        $isFormValid    = false;
-        $nameFirstError = $errorPrefix . $errorRequiredText . $errorSuffix;
-    }
 
-    if (!empty($_POST['name-last'])) {
-        $nameLast = sanitizeData($_POST['name-last']);
-    } else {
-        $isFormValid   = false;
-        $nameLastError = $errorPrefix . $errorRequiredText . $errorSuffix;
-    }
+        if (!empty($_POST['name-first'])) {
+            $nameFirst = sanitizeData($_POST['name-first']);
+        } else {
+            $isFormValid    = false;
+            $nameFirstError = $errorPrefix . $errorRequiredText . $errorSuffix;
+        }
 
-    if (!empty($_POST['title'])) {
-        $title = sanitizeData($_POST['title']);
-    } else {
-        $isFormValid = false;
-        $titleError  = $errorPrefix . $errorRequiredText . $errorSuffix;
-    }
+        if (!empty($_POST['name-last'])) {
+            $nameLast = sanitizeData($_POST['name-last']);
+        } else {
+            $isFormValid   = false;
+            $nameLastError = $errorPrefix . $errorRequiredText . $errorSuffix;
+        }
 
-    if (!empty($_POST['message'])) {
-        $message = sanitizeData($_POST['message']);
-    } else {
-        $isFormValid  = false;
-        $messageError = $errorPrefix . $errorRequiredText . $errorSuffix;
-    }
+        if (!empty($_POST['title'])) {
+            $title = sanitizeData($_POST['title']);
+        } else {
+            $isFormValid = false;
+            $titleError  = $errorPrefix . $errorRequiredText . $errorSuffix;
+        }
 
-    if ($isFormValid) {
-        //echo 'Name first: ' . $nameFirst . '<br />';
-        //echo 'Name last: ' . $nameLast . '<br />';
-        //echo 'Title: ' . $title . '<br />';
-        //echo 'Message: ' . $message . '<br />';
+        if (!empty($_POST['message'])) {
+            $message = sanitizeData($_POST['message']);
+        } else {
+            $isFormValid  = false;
+            $messageError = $errorPrefix . $errorRequiredText . $errorSuffix;
+        }
 
-        $guestbook = new Guestbook($nameFirst . ' ' . $nameLast, $title, $message);
-        $guestbook->savePost();
+        if ($isFormValid) {
+            //echo 'Name first: ' . $nameFirst . '<br />';
+            //echo 'Name last: ' . $nameLast . '<br />';
+            //echo 'Title: ' . $title . '<br />';
+            //echo 'Message: ' . $message . '<br />';
 
-        // RESET FORM FIELDS
-        $nameFirst = $nameLast = $title = $message = "";
+            $id        = $_POST['ID'] ?? '';
+            $guestbook = new Guestbook($nameFirst . ' ' . $nameLast, $title, $message, $id);
+            $guestbook->savePost();
+
+            // RESET FORM FIELDS
+            $nameFirst = $nameLast = $title = $message = "";
+        }
     }
 
 }

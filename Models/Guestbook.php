@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+//namespace Php_guestbook_mysql;
+
 class Guestbook
 {
     const MAX_POSTS = 20;
 
+    private string $ID;
     private string $author;
     private string $title;
     private string $content;
@@ -16,12 +19,14 @@ class Guestbook
      * @param string $author
      * @param string $title
      * @param string $content
+     * @param string $id
      * @throws Exception
      */
-    public function __construct(string $author, string $title, string $content)
+    public function __construct(string $author, string $title, string $content, string $id = '')
     {
         $currentDate = new DateTime("now", new DateTimeZone('Europe/Brussels'));
 
+        $this->ID       = $id;
         $this->author   = $author;
         $this->title    = $title;
         $this->content  = $content;
@@ -32,11 +37,35 @@ class Guestbook
     {
         $guestbookItems = [];
 
-        foreach (Poster::get() as $guestbookItem) {
-                $guestbookItems[] = $guestbookItem;
+        foreach (Poster::list() as $guestbookItem) {
+            $guestbookItems[] = $guestbookItem;
         }
-        
+
         return array_slice(array_reverse($guestbookItems), 0, self::MAX_POSTS - 1);
+    }
+
+    public static function getPost($id): array
+    {
+        $guestbookItems = [];
+
+        foreach (Poster::get($id) as $guestbookItem) {
+            $guestbookItems[] = $guestbookItem;
+        }
+
+        return $guestbookItems;
+    }
+
+    public static function deletePost($id): void
+    {
+        Poster::delete($id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getID(): string
+    {
+        return $this->ID;
     }
 
     /**

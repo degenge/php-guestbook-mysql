@@ -37,7 +37,11 @@
 <div class="flex flex-wrap -mx-3 mb-1" >
 
     <div class="w-full px-3 text-center" >
-        <button type="submit" id="submit" name="submit" class="shadow bg-green-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" >Post
+        <input type="hidden" name="ID" value="<?php echo $ID; ?>">
+        <?php $buttonText = (isset($_POST['update'])) ? "Update" : "Post"; ?>
+        <button type="submit" id="submit" name="submit" value="<?php echo strtolower($buttonText); ?>"
+                class="shadow bg-green-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" >
+            <?php echo $buttonText; ?>
         </button >
     </div >
 
