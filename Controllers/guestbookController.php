@@ -19,13 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $test = Guestbook::getPost($_POST['update']);
 
         $ID        = $test[0]['ID'];
-        $nameFirst = $test[0]['name'];
-        $nameLast  = $test[0]['name'];
+        $nameFirst = $test[0]['name_first'];
+        $nameLast  = $test[0]['name_last'];
         $title     = $test[0]['title'];
         $message   = $test[0]['message'];
     } elseif (isset($_POST['delete'])) {
         $test = Guestbook::deletePost($_POST['delete']);
-        var_dump($test);
 
     } else {
 
@@ -58,13 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if ($isFormValid) {
-            //echo 'Name first: ' . $nameFirst . '<br />';
-            //echo 'Name last: ' . $nameLast . '<br />';
-            //echo 'Title: ' . $title . '<br />';
-            //echo 'Message: ' . $message . '<br />';
-
             $id        = $_POST['ID'] ?? '';
-            $guestbook = new Guestbook($nameFirst . ' ' . $nameLast, $title, $message, $id);
+            $guestbook = new Guestbook($nameFirst, $nameLast, $title, $message, $id);
             $guestbook->savePost();
 
             // RESET FORM FIELDS

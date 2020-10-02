@@ -6,10 +6,6 @@ declare(strict_types=1);
 
 //use PDO;
 
-const FILE_FOLDER = 'Data';
-const FILE_NAME   = 'guestbook_data.txt';
-const FILE_PATH   = DIRECTORY_SEPARATOR . FILE_FOLDER . DIRECTORY_SEPARATOR . FILE_NAME;
-
 class Poster
 {
 
@@ -18,13 +14,18 @@ class Poster
         try {
             $pdo = self::openConnection();
             if ($guestbookItem->getID() === '') {
-                $sql    = "INSERT INTO guestbook (name, title, message, date) VALUES ('" . $guestbookItem->getAuthor() . "', '" . $guestbookItem->getTitle() . "', '" . $guestbookItem->getContent() . "', '" . $guestbookItem->getPostdate() . "')";
+                $sql    = 'INSERT INTO guestbook (name_first, name_last, title, message, date_post) VALUES (:name_first, :name_last, :title, :message, :date_post)';
                 $handle = $pdo->prepare($sql);
             } else {
-                $sql    = "UPDATE guestbook SET name = '" . $guestbookItem->getAuthor() . "', title = '" . $guestbookItem->getTitle() . "', message = '" . $guestbookItem->getContent() . "', date = '" . $guestbookItem->getPostdate() . "' WHERE ID = :id";
+                $sql    = 'UPDATE guestbook SET name_first = :name_first, name_last = :name_last, title = :title, message = :message, date_post = :date_post WHERE ID = :id';
                 $handle = $pdo->prepare($sql);
                 $handle->bindValue(':id', $guestbookItem->getID());
             }
+            $handle->bindValue(':name_first', $guestbookItem->getNameFirst());
+            $handle->bindValue(':name_last', $guestbookItem->getNameLast());
+            $handle->bindValue(':title', $guestbookItem->getTitle());
+            $handle->bindValue(':message', $guestbookItem->getMessage());
+            $handle->bindValue(':date_post', $guestbookItem->getDatePost());
             $handle->execute();
 
         } catch (Exception $e) {
@@ -34,10 +35,9 @@ class Poster
 
     public static function openConnection(): PDO
     {
-        // Try to figure out what these should be for you
-        $dbhost = "localhost";
-        $dbuser = "root";
-        $dbpass = "l@r@cr0ft";
+        $dbHost = "localhost";
+        $dbUser = "root";
+        $dbPass = "l@r@cr0ft";
         $db     = "becode_php_guestbook";
 
         $driverOptions = [
@@ -46,19 +46,17 @@ class Poster
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
 
-        // Try to understand what happens here
-        $pdo = new PDO('mysql:host=' . $dbhost . ';dbname=' . $db, $dbuser, $dbpass, $driverOptions);
+        $pdo = new PDO('mysql:host=' . $dbHost . ';dbname=' . $db, $dbUser, $dbPass, $driverOptions);
 
-        // Why we do this here
         return $pdo;
     }
 
-    public static function list()
+    public static function list(): array
     {
         $rows = [];
         try {
             $pdo    = self::openConnection();
-            $sql    = "SELECT ID, name, title, message, date FROM guestbook";
+            $sql    = "SELECT ID, name_first, name_last, title, message, date_post FROM guestbook";
             $handle = $pdo->prepare($sql);
             $handle->execute();
             $rows = $handle->fetchAll();
@@ -69,12 +67,12 @@ class Poster
         return $rows;
     }
 
-    public static function get($id)
+    public static function get($id): array
     {
         $rows = [];
         try {
             $pdo    = self::openConnection();
-            $sql    = "SELECT ID, name, title, message, date FROM guestbook WHERE ID = :id";
+            $sql    = 'SELECT ID, name_first, name_last, title, message, date_post FROM guestbook WHERE ID = :id';
             $handle = $pdo->prepare($sql);
             $handle->bindValue(':id', $id);
             $handle->execute();
@@ -90,15 +88,13 @@ class Poster
     {
         try {
             $pdo    = self::openConnection();
-            $sql    = "DELETE FROM guestbook WHERE ID = :id";
+            $sql    = 'DELETE FROM guestbook WHERE ID = :id';
             $handle = $pdo->prepare($sql);
             $handle->bindValue(':id', $id);
             $handle->execute();
         } catch (Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
         }
-
-//        return $rows;
     }
 
 }

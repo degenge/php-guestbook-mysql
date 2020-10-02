@@ -22,7 +22,7 @@ foreach ($guestbookItems as $guestbookItem) {
             <div class="text-gray-700 text-base text-left" >
                 <blockquote class="relative p-4 text-l italic bg-neutral-100 text-neutral-600 border-neutral-500 quote" >
                     <div class="font-mono absolute leading-none text-gray-500 text-4xl" style="right: 96%; top: 0.75rem;" aria-hidden="true" >&ldquo;</div >
-                    <p class="ml-1" ><?php echo $guestbookItem['name']; ?></p >
+                    <p class="ml-1" ><?php echo $guestbookItem['name_first'] . ' ' . $guestbookItem['name_last']; ?></p >
                 </blockquote >
             </div >
 
@@ -44,7 +44,7 @@ foreach ($guestbookItems as $guestbookItem) {
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 text-center" >
 
                 <span class="inline-block text-sm text-gray-700 align-center" >
-                    <?php echo $guestbookItem['date']; ?>
+                    <?php echo $guestbookItem['date_post']; ?>
                 </span >
 
                 </div >

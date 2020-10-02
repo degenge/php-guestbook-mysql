@@ -6,31 +6,34 @@ declare(strict_types=1);
 
 class Guestbook
 {
-    const MAX_POSTS = 20;
+    public const MAX_POSTS = 20;
 
     private string $ID;
-    private string $author;
+    private string $nameFirst;
+    private string $nameLast;
     private string $title;
-    private string $content;
-    private string $postdate;
+    private string $message;
+    private string $datePost;
 
     /**
      * Guestbook constructor.
-     * @param string $author
+     * @param string $nameFirst
+     * @param string $nameLast
      * @param string $title
-     * @param string $content
+     * @param string $message
      * @param string $id
      * @throws Exception
      */
-    public function __construct(string $author, string $title, string $content, string $id = '')
+    public function __construct(string $nameFirst, string $nameLast, string $title, string $message, string $id = '')
     {
         $currentDate = new DateTime("now", new DateTimeZone('Europe/Brussels'));
 
-        $this->ID       = $id;
-        $this->author   = $author;
-        $this->title    = $title;
-        $this->content  = $content;
-        $this->postdate = $currentDate->format('Y-m-d H:i:s');
+        $this->ID        = $id;
+        $this->nameFirst = $nameFirst;
+        $this->nameLast  = $nameLast;
+        $this->title     = $title;
+        $this->message   = $message;
+        $this->datePost  = $currentDate->format('Y-m-d H:i:s');
     }
 
     public static function getPosts(): array
@@ -71,9 +74,17 @@ class Guestbook
     /**
      * @return string
      */
-    public function getAuthor(): string
+    public function getNameFirst(): string
     {
-        return $this->author;
+        return $this->nameFirst;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNameLast(): string
+    {
+        return $this->nameLast;
     }
 
     /**
@@ -87,17 +98,17 @@ class Guestbook
     /**
      * @return string
      */
-    public function getContent(): string
+    public function getMessage(): string
     {
-        return $this->content;
+        return $this->message;
     }
 
     /**
      * @return string
      */
-    public function getPostdate(): string
+    public function getDatePost(): string
     {
-        return $this->postdate;
+        return $this->datePost;
     }
 
     public function savePost(): void
