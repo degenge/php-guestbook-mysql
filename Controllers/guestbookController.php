@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-//namespace Php_guestbook_mysql;
 $ID = $nameFirst = $nameLast = $title = $message = "";
 
 $nameFirstError = $nameLastError = $titleError = $messageError = "";

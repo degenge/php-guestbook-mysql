@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-//namespace Php_guestbook_mysql;
-
 class Guestbook
 {
     public const MAX_POSTS = 20;

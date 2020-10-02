@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-//namespace Php_guestbook_mysql;
-
-//use PDO;
-
 class Poster
 {
 

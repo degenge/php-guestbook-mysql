@@ -1,7 +1,5 @@
 <?php
 
-//namespace Php_guestbook_mysql;
-
 $guestbookItems = Guestbook::getPosts();
 
 foreach ($guestbookItems as $guestbookItem) {
